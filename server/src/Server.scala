@@ -7,13 +7,15 @@ import java.time.Clock
 import shared.Protocol
 import castor.SimpleActor
 import cask.endpoints.WsChannelActor
+import backend.*
 
 class WebServer() {}
 object WebServer extends cask.Main {
   override def port: Int = 8384
   override def host: String = "0.0.0.0"
   val allRoutes = Seq(
-    WebPageRoutes()
+    WebPageRoutes(),
+    ChessRoutes()
   )
   println(s"Starting/listening on $host:$port")
 }

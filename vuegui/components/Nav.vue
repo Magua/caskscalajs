@@ -2,6 +2,7 @@
   <div id="nav">
     <NuxtLink to="/">Home page</NuxtLink> |
     <NuxtLink to="/chat">Chat</NuxtLink> |
+    <NuxtLink to="/chessview">Chess</NuxtLink> |
     <NuxtLink to="/about">About</NuxtLink>
   </div>
 </template>
