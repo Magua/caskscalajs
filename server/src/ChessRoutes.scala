@@ -17,19 +17,26 @@ case class ChessRoutes()(implicit cc: castor.Context, log: cask.Logger)
     val t = chessBackend.getTraining(id).get
     upickle.default.writeJs(t)
   }
+  @cask.delete("chess/:id")
+  def deleteTraining(id: String) = {
+    val b = chessBackend.deleteTraining(id)
+    ujson.Obj("deleted" -> b)
+  }
   /*  */
   @cask.postJson("/chess")
-  def createTraining(move: ujson.Value) = {
-    val id = chessBackend.createTraining(Moves(Seq(move.str), Seq()))
+  def createTraining(name: ujson.Value, moves: ujson.Value) = {
+    val ms = moves.str.split(",").map(_.trim).toSeq
+    val id = chessBackend.createTraining(name.str, Moves(ms))
     ujson.Obj("id" -> id)
   }
-
-  @cask.postJson("/chess/:id/move")
-  def updateTraining(id: String, move: ujson.Value) = {
+  
+  @cask.postJson("/chess/:id")
+  def updateTraining(id: String, name: ujson.Value, moves: ujson.Value) = {
+    val ms = moves.str.split(",").map(_.trim).toSeq
     val updated = chessBackend
       .getTraining(id)
       .get
-      .copy(moves = Moves(Seq(move.str), Seq()))
+      .copy(moves = Moves(ms), name = name.str)
     val b = chessBackend.updateTraining(id, updated)
     ujson.Obj("updated" -> b)
   }
